@@ -7,10 +7,10 @@ Endpoint : POST /api/register
 Request Body :
 ```json
 {
-    "name": "hanif",
-    "email": "hanif@gmail.com",
-    "birthday": "13-12-2002",
-    "password": "abcdefgh"
+    "name": "name",
+    "email": "example@gmail.com",
+    "birthday": "YYYY-MM-DD",
+    "password": "secret"
 }
 ```
 
@@ -30,8 +30,8 @@ Endpoint : POST /api/login
 Request Body :
 ```json
 {
-    "email": "hanif@gmail.com",
-    "password": "abcdefgh"
+    "email": "example@gmail.com",
+    "password": "secret"
 }
 ```
 
@@ -42,7 +42,7 @@ Response Body Success :
     "message": "success",
     "loginResult": {
         "userId": "unique-id",
-        "name": "hanif",
+        "name": "name",
         "token": "unique-token"
     }
 }
@@ -63,8 +63,8 @@ Response Body Success :
     "message": "User fetched succesfully",
     "user": {
         "userId": "unique-id",
-        "name": "hanif",
-        "email": "hanif@gmail.com"
+        "name": "name",
+        "email": "example@gmail.com"
     }
 }
 ```
@@ -77,9 +77,9 @@ Endpoint : PUT /api/profile/edit
 Request Body :
 ```json
 {
-    "name": "hanif",
-    "email": "hanif@gmail.com",
-    "birthday": "13-12-2002"
+    "name": "name",
+    "email": "example@gmail.com",
+    "birthday": "YYYY-MM-DDDD"
 }
 ```
 
