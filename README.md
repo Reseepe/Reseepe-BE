@@ -1,5 +1,7 @@
 # User API Spec
 
+![WhatsApp Image 2024-06-04 at 11 35 26_79bbf5bf](https://github.com/Reseepe/Reseepe-BE/assets/96192431/7cb25b2a-f5e1-4176-be22-45bc0f5c1c94)
+
 ## Register User API
 
 Endpoint : POST /api/register
