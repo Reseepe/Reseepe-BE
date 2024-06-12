@@ -2,7 +2,14 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../helpers/jwt");
 const { Op } = require("sequelize");
-const { User, Recipe, Ingredient, Bookmark, RecipeIngredient } = require("../models");
+const {
+  User,
+  Recipe,
+  Ingredient,
+  Instruction,
+  Bookmark,
+  RecipeIngredient,
+} = require("../models");
 
 exports.searchIngredients = async (req, res) => {
   try {
@@ -39,35 +46,37 @@ exports.searchIngredients = async (req, res) => {
   }
 };
 
-exports.getRecommendedRecipes = async (req, res, next) => {
+exports.getRecommendedRecipes = async (req, res) => {
   try {
-    const userId = req.user.id;
+    // Ambil userId dari token yang terotentikasi
+    const userId = req.user.id; // Sesuaikan dengan bagaimana Anda mengambil userId dari token
 
-    // Find bookmarks of the user
-    const user = await User.findByPk(userId, {
-      include: {
-        model: Recipe,
-        through: {
-          model: Bookmark,
+    // Ambil daftar resep yang direkomendasikan untuk pengguna
+    const recommendedRecipes = await Recipe.findAll({
+      include: [
+        {
+          model: User,
+          where: { id: userId }, // Filter berdasarkan id pengguna yang sedang login
+          required: true, // Memastikan hanya mengambil resep yang memiliki bookmark oleh pengguna
           attributes: [],
-        },
-        include: {
-          model: Ingredient,
           through: {
-            model: RecipeIngredient,
-            attributes: [], 
+            attributes: [], // Hilangkan kolom tambahan dari tabel jembatan
           },
-          attributes: ["name", "description"],
         },
-        attributes: ["id", "name", "description", "photoUrl", "instruction"],
-      },
+        {
+          model: Ingredient,
+          attributes: ["name", "description"],
+          through: { attributes: [] }, // Hilangkan kolom tambahan dari tabel jembatan
+        },
+        {
+          model: Instruction,
+          attributes: ["number", "step"],
+        },
+      ],
     });
 
-    if (!user) {
-      return res.status(404).json({ error: true, message: "User not found" });
-    }
-
-    const recommendedList = user.Recipes.map((recipe) => ({
+    // Format respons sesuai dengan kebutuhan
+    const recommendedList = recommendedRecipes.map((recipe) => ({
       recipeId: recipe.id,
       name: recipe.name,
       description: recipe.description,
@@ -76,18 +85,21 @@ exports.getRecommendedRecipes = async (req, res, next) => {
         description: ingredient.description,
       })),
       photoUrl: recipe.photoUrl,
-      instruction: recipe.instruction,
+      instruction: recipe.Instructions.map((instruction) => ({
+        step: instruction.step,
+      })),
     }));
 
-    return res.json({
+    res.status(200).json({
       error: false,
       message: "Successfully fetched recommended recipes",
       recommendedList,
     });
   } catch (error) {
     console.error("Error fetching recommended recipes:", error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Failed to fetch recommended recipes" });
+    res.status(500).json({
+      error: true,
+      message: "Failed to fetch recommended recipes",
+    });
   }
 };

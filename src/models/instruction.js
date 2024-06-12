@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
       },
       recipeId: {
@@ -21,6 +22,8 @@ module.exports = (sequelize) => {
           model: "Recipe",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       number: {
         type: DataTypes.INTEGER,

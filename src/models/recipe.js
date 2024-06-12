@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "recipeId",
         otherKey: "ingredientId",
       });
+      Recipe.hasMany(models.Instruction, {
+        foreignKey: "recipeId",
+      });
     }
   }
   Recipe.init(
