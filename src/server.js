@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 // Handle 404 - Not Found
 app.use((req, res, next) => {
     res.status(404).json({
-        error: 'Not Found',
+        error: true,
         message: 'Resource not found'
     });
 });
@@ -29,7 +29,8 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(err.status || 500).json({
-        error: err.message || 'Internal Server Error'
+        error: true,
+        message: err.message || 'Internal Server Error'
     });
 });
 

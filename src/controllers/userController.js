@@ -20,7 +20,10 @@ exports.getUserById = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching user by ID:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -41,7 +44,10 @@ exports.getUserByEmail = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching user by email:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -64,9 +70,10 @@ exports.getProfile = async (req, res) => {
     });
   } catch (err) {
     console.error("Error fetching user profile:", err);
-    return res
-      .status(500)
-      .json({ error: true, message: "Internal server error" });
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -99,13 +106,16 @@ exports.createUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating user:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 };
 
 exports.changePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
-  
+
   try {
     const user = req.user;
 
@@ -120,9 +130,10 @@ exports.changePassword = async (req, res) => {
     }
 
     if (oldPassword === newPassword) {
-      return res
-        .status(400)
-        .json({ error: true, message: "New password cannot be the same as old password" });
+      return res.status(400).json({
+        error: true,
+        message: "New password cannot be the same as old password",
+      });
     }
 
     const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
@@ -144,9 +155,10 @@ exports.changePassword = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating password:", error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Internal server error" });
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -172,9 +184,10 @@ exports.updateUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating user data:", error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Internal server error" });
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -207,6 +220,9 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     console.error("Error logging in:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+    });
   }
 };
