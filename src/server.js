@@ -1,15 +1,17 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const userRoutes = require('./routes/userRoutes');
+const recipeRoutes = require('./routes/recipeRoutes');
 
 dotenv.config();
 
 const app = express();
-const userRoutes = require('./routes/userRoutes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', userRoutes);
+app.use('/api', recipeRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World');
