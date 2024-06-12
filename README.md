@@ -134,7 +134,7 @@ Response Body Success :
         "recipeId": "unique-id (UUID)",
         "name": "Indonesian Fried Rice",
         "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingridientList": [
+        "ingredientList": [
             {
                 "name": "rice",
                 "description": "100 grams of cooked rice"
@@ -182,7 +182,7 @@ Response Body Success :
         "recipeId": "unique-id (UUID)",
         "name": "Indonesian Fried Rice",
         "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingridientList": [
+        "ingredientList": [
             {
                 "name": "rice",
                 "description": "100 grams of cooked rice"
@@ -196,9 +196,9 @@ Response Body Success :
 ```
 
 
-## Get Ingridient from Scanned Photo API
+## Get Ingredient from Scanned Photo API
 
-Endpoint : POST /api/ingridient
+Endpoint : POST /api/ingredient
 
 Request Header :
 - Authorization: Bearer <token>
@@ -211,8 +211,8 @@ Response Body Success :
 ```json
 {
     "error": false,
-    "message": "Ingridients fetcehd succesfully",
-    "ingridientList": [
+    "message": "Ingredients fetcehd succesfully",
+    "ingredientList": [
         {
             "name": "white onion",
         },
@@ -224,7 +224,7 @@ Response Body Success :
 ```
 
 
-## Get Recipes with Scanned Ingridients
+## Get Recipes with Scanned Ingredients
 
 Endpoint : POST /api/recipes
 
@@ -234,7 +234,7 @@ Request Header :
 Request Body :
 ```json
 {
-    "ingridientList": [
+    "ingredientList": [
         {
             "name": "white onion",
         },
@@ -255,7 +255,7 @@ Response Body Success :
         "recipeId": "unique-id (UUID)",
         "name": "Indonesian Fried Rice",
         "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingridientList": [
+        "ingredientList": [
             {
                 "name": "rice",
                 "description": "100 grams of cooked rice"
@@ -269,12 +269,12 @@ Response Body Success :
 ```
 
 
-## Search Ingridient API
+## Search Ingredient API
 
 Endpoint : GET /api/search?q=<query>
 
 Query Parameter :
-- ingridient name (UUID)
+- ingredient name (UUID)
 
 Response Body Success :
 ```json
@@ -282,7 +282,7 @@ Response Body Success :
     "error": false,
     "message": "Succesfully bookmarked the recipe",
     "found": 2,
-    "ingridientList": [
+    "ingredientList": [
         {
             "name": "white onion",
         },
