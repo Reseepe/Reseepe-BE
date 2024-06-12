@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../helpers/jwt");
 const { Op } = require("sequelize");
-const { User, Recipe, Ingredient, Bookmark } = require("../models");
+const { User, Recipe, Ingredient, Bookmark, RecipeIngredient } = require("../models");
 
 exports.searchIngredients = async (req, res) => {
   try {
@@ -39,51 +39,55 @@ exports.searchIngredients = async (req, res) => {
   }
 };
 
-exports.getRecommendedRecipes = async (req, res) => {
+exports.getRecommendedRecipes = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const bookmarks = await Bookmark.findAll({
-      where: { userId },
-      include: [
-        {
-          model: Recipe,
-          include: [
-            {
-              model: Ingredient, // Assuming Recipe has many Ingredients
-              through: { attributes: [] }, // Remove join table attributes
-            },
-          ],
+    // Find bookmarks of the user
+    const user = await User.findByPk(userId, {
+      include: {
+        model: Recipe,
+        through: {
+          model: Bookmark,
+          attributes: [],
         },
-      ],
-      limit: 5,
+        include: {
+          model: Ingredient,
+          through: {
+            model: RecipeIngredient,
+            attributes: [], 
+          },
+          attributes: ["name", "description"],
+        },
+        attributes: ["id", "name", "description", "photoUrl", "instruction"],
+      },
     });
 
-    const recommendedList = bookmarks.map((bookmark) => {
-      const recipe = bookmark.Recipe;
-      return {
-        recipeId: recipe.id,
-        name: recipe.name,
-        description: recipe.description,
-        ingredientList: recipe.Ingredients.map((ingredient) => ({
-          name: ingredient.name,
-          description: ingredient.description,
-        })),
-        photoUrl: recipe.photoUrl,
-        instruction: recipe.instruction,
-      };
-    });
+    if (!user) {
+      return res.status(404).json({ error: true, message: "User not found" });
+    }
 
-    res.json({
+    const recommendedList = user.Recipes.map((recipe) => ({
+      recipeId: recipe.id,
+      name: recipe.name,
+      description: recipe.description,
+      ingredientList: recipe.Ingredients.map((ingredient) => ({
+        name: ingredient.name,
+        description: ingredient.description,
+      })),
+      photoUrl: recipe.photoUrl,
+      instruction: recipe.instruction,
+    }));
+
+    return res.json({
       error: false,
-      message: "Successfully retrieved recommended recipes",
+      message: "Successfully fetched recommended recipes",
       recommendedList,
     });
   } catch (error) {
-    res.status(500).json({
-      error: true,
-      message: "An error occurred while fetching recommended recipes",
-      details: error.message,
-    });
+    console.error("Error fetching recommended recipes:", error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Failed to fetch recommended recipes" });
   }
 };
