@@ -23,8 +23,8 @@ const authMiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error("Error authenticating user:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    console.error("Error authenticating user:", error.message);
+    return res.status(500).json({ error: true, message: error.message });
   }
 };
 
