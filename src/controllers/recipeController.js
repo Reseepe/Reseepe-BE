@@ -48,34 +48,32 @@ exports.searchIngredients = async (req, res) => {
 
 exports.getRecommendedRecipes = async (req, res) => {
   try {
-    // Ambil userId dari token yang terotentikasi
-    const userId = req.user.id; // Sesuaikan dengan bagaimana Anda mengambil userId dari token
+    const userId = req.user.id;
 
-    // Ambil daftar resep yang direkomendasikan untuk pengguna
     const recommendedRecipes = await Recipe.findAll({
       include: [
         {
           model: User,
-          where: { id: userId }, // Filter berdasarkan id pengguna yang sedang login
-          required: true, // Memastikan hanya mengambil resep yang memiliki bookmark oleh pengguna
+          where: { id: userId },
+          required: true,
           attributes: [],
           through: {
-            attributes: [], // Hilangkan kolom tambahan dari tabel jembatan
+            attributes: [],
           },
         },
         {
           model: Ingredient,
           attributes: ["name", "description"],
-          through: { attributes: [] }, // Hilangkan kolom tambahan dari tabel jembatan
+          through: { attributes: [] },
         },
         {
           model: Instruction,
           attributes: ["number", "step"],
         },
       ],
+      limit: 5,
     });
 
-    // Format respons sesuai dengan kebutuhan
     const recommendedList = recommendedRecipes.map((recipe) => ({
       recipeId: recipe.id,
       name: recipe.name,
@@ -103,3 +101,95 @@ exports.getRecommendedRecipes = async (req, res) => {
     });
   }
 };
+
+exports.addBookmark = async (req, res) => {
+  const { recipeId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const existingBookmark = await Bookmark.findOne({
+      where: {
+        userId,
+        recipeId,
+      },
+    });
+
+    if (existingBookmark) {
+      return res.status(400).json({
+        error: true,
+        message: "Recipe is already bookmarked",
+      });
+    }
+
+    await Bookmark.create({
+      userId,
+      recipeId,
+    });
+
+    res.status(201).json({
+      error: false,
+      message: "Successfully bookmarked the recipe",
+    });
+  } catch (error) {
+    console.error("Error bookmarking recipe:", error);
+    res.status(500).json({
+      error: true,
+      message: "Failed to bookmark the recipe",
+    });
+  }
+};
+
+exports.getBookmarkedRecipes = async (req, res) => {
+    try {
+      const userId = req.user.id;
+  
+      const recommendedRecipes = await Recipe.findAll({
+        include: [
+          {
+            model: User,
+            where: { id: userId },
+            required: true,
+            attributes: [],
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: Ingredient,
+            attributes: ["name", "description"],
+            through: { attributes: [] },
+          },
+          {
+            model: Instruction,
+            attributes: ["number", "step"],
+          },
+        ],
+      });
+  
+      const recommendedList = recommendedRecipes.map((recipe) => ({
+        recipeId: recipe.id,
+        name: recipe.name,
+        description: recipe.description,
+        ingredientList: recipe.Ingredients.map((ingredient) => ({
+          name: ingredient.name,
+          description: ingredient.description,
+        })),
+        photoUrl: recipe.photoUrl,
+        instruction: recipe.Instructions.map((instruction) => ({
+          step: instruction.step,
+        })),
+      }));
+  
+      res.status(200).json({
+        error: false,
+        message: "Successfully fetched recommended recipes",
+        recommendedList,
+      });
+    } catch (error) {
+      console.error("Error fetching recommended recipes:", error);
+      res.status(500).json({
+        error: true,
+        message: "Failed to fetch recommended recipes",
+      });
+    }
+  };
