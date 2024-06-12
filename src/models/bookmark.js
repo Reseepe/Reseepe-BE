@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Bookmark",
+      tableName: "bookmarks",
       timestamps: true,
       createdAt: "createdAt",
       updatedAt: "updatedAt",
