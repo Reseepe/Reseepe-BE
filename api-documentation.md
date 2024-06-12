@@ -7,10 +7,10 @@ Endpoint : POST /api/register
 Request Body :
 ```json
 {
-    "name": "hanif",
-    "email": "hanif@gmail.com",
-    "birthday": "13-12-2002",
-    "password": "abcdefgh"
+    "name": "name",
+    "email": "example@gmail.com",
+    "birthday": "YYYY-MM-DD",
+    "password": "secret"
 }
 ```
 
@@ -30,8 +30,8 @@ Endpoint : POST /api/login
 Request Body :
 ```json
 {
-    "email": "hanif@gmail.com",
-    "password": "abcdefgh"
+    "email": "example@gmail.com",
+    "password": "secret"
 }
 ```
 
@@ -42,7 +42,7 @@ Response Body Success :
     "message": "success",
     "loginResult": {
         "userId": "unique-id",
-        "name": "hanif",
+        "name": "name",
         "token": "unique-token"
     }
 }
@@ -63,8 +63,8 @@ Response Body Success :
     "message": "User fetched succesfully",
     "user": {
         "userId": "unique-id",
-        "name": "hanif",
-        "email": "hanif@gmail.com"
+        "name": "name",
+        "email": "example@gmail.com"
     }
 }
 ```
@@ -77,9 +77,9 @@ Endpoint : PUT /api/profile/edit
 Request Body :
 ```json
 {
-    "name": "hanif",
-    "email": "hanif@gmail.com",
-    "birthday": "13-12-2002"
+    "name": "name",
+    "email": "example@gmail.com",
+    "birthday": "YYYY-MM-DDDD"
 }
 ```
 
@@ -134,7 +134,7 @@ Response Body Success :
         "recipeId": "unique-id (UUID)",
         "name": "Indonesian Fried Rice",
         "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingridientList": [
+        "ingredientList": [
             {
                 "name": "rice",
                 "description": "100 grams of cooked rice"
@@ -182,7 +182,7 @@ Response Body Success :
         "recipeId": "unique-id (UUID)",
         "name": "Indonesian Fried Rice",
         "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingridientList": [
+        "ingredientList": [
             {
                 "name": "rice",
                 "description": "100 grams of cooked rice"
@@ -196,9 +196,9 @@ Response Body Success :
 ```
 
 
-## Get Ingridient from Scanned Photo API
+## Get Ingredient from Scanned Photo API
 
-Endpoint : POST /api/ingridient
+Endpoint : POST /api/ingredient
 
 Request Header :
 - Authorization: Bearer <token>
@@ -211,8 +211,8 @@ Response Body Success :
 ```json
 {
     "error": false,
-    "message": "Ingridients fetcehd succesfully",
-    "ingridientList": [
+    "message": "Ingredients fetcehd succesfully",
+    "ingredientList": [
         {
             "name": "white onion",
         },
@@ -224,7 +224,7 @@ Response Body Success :
 ```
 
 
-## Get Recipes with Scanned Ingridients
+## Get Recipes with Scanned Ingredients
 
 Endpoint : POST /api/recipes
 
@@ -234,7 +234,7 @@ Request Header :
 Request Body :
 ```json
 {
-    "ingridientList": [
+    "ingredientList": [
         {
             "name": "white onion",
         },
@@ -255,7 +255,7 @@ Response Body Success :
         "recipeId": "unique-id (UUID)",
         "name": "Indonesian Fried Rice",
         "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingridientList": [
+        "ingredientList": [
             {
                 "name": "rice",
                 "description": "100 grams of cooked rice"
@@ -269,12 +269,12 @@ Response Body Success :
 ```
 
 
-## Search Ingridient API
+## Search Ingredient API
 
 Endpoint : GET /api/search?q=<query>
 
 Query Parameter :
-- ingridient name (UUID)
+- ingredient name (UUID)
 
 Response Body Success :
 ```json
@@ -282,7 +282,7 @@ Response Body Success :
     "error": false,
     "message": "Succesfully bookmarked the recipe",
     "found": 2,
-    "ingridientList": [
+    "ingredientList": [
         {
             "name": "white onion",
         },
