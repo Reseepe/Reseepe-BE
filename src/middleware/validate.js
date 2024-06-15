@@ -36,3 +36,19 @@ exports.validateLogin = [
     next();
   },
 ];
+
+exports.validateEditUser = [
+  check("name").notEmpty().withMessage("Name is required"),
+  check("email").isEmail().withMessage("Invalid email address"),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        error: true,
+        message: "Validation errors",
+        details: errors.array(),
+      });
+    }
+    next();
+  },
+];
