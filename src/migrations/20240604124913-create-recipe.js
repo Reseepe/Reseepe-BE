@@ -21,6 +21,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      duration: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       photoUrl: {
         type: Sequelize.STRING,
         allowNull: true,

@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      duration: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       nutrition: {
         type: DataTypes.STRING,
         allowNull: true,
