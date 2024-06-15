@@ -67,6 +67,7 @@ exports.getProfile = async (req, res) => {
         userId: user.id,
         name: user.name,
         email: user.email,
+        birthday: user.birthday
       },
     });
   } catch (err) {
