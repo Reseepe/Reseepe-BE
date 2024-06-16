@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      nutrition: {
+      calories: {
         type: DataTypes.STRING,
         allowNull: true,
       },

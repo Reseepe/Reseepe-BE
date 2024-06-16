@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      nutrition: {
+      calories: {
         type: Sequelize.STRING,
         allowNull: true,
       },
