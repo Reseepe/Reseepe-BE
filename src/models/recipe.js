@@ -39,7 +39,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      ingredients: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       duration: {
@@ -52,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       photoUrl: {
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      instructions: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },

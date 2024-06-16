@@ -14,7 +14,11 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      ingredients: {
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       calories: {
@@ -27,6 +31,10 @@ module.exports = {
       },
       photoUrl: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      instructions: {
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       createdAt: {
