@@ -10,8 +10,7 @@ module.exports = {
         allowNull: false,
       },
       recipeId: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "recipes",

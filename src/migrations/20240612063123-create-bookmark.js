@@ -19,7 +19,7 @@ module.exports = {
         onDelete: "CASCADE",
       },
       recipeId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "Recipes",

@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
       },
       recipeId: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "recipes",
