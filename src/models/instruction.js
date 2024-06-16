@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
         primaryKey: true,
       },
       recipeId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: "Recipe",
