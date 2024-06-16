@@ -10,4 +10,8 @@ router.get('/bookmarked', authMiddleware, RecipeController.getBookmarkedRecipes)
 
 router.post('/bookmark/:recipeId', authMiddleware, RecipeController.addBookmark);
 
+// development only
+
+router.get('/recipes', recipeController.getRecipes);
+
 module.exports = router;
