@@ -175,6 +175,8 @@ Request Header :
 Response Body Success :
 ```json
 {
+    "error": false,
+    "message": "Succesfully bookmarked the recipe",
     "bookmarkedRecipes": [
         {
             "id": 1,
