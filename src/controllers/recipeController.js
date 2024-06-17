@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const { generateToken } = require("../helpers/jwt");
 const { Op } = require("sequelize");
-const axios = require("axios");
 const {
   User,
   Recipe,
