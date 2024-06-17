@@ -204,8 +204,6 @@ Response Body Success :
     ]
 }
 ```
-}
-```
 
 
 ## Get Ingredient from Scanned Photo API
