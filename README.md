@@ -250,19 +250,44 @@ Response Body Success :
 {
     "error": false,
     "message": "Succesfully bookmarked the recipe",
-    "recipeList": [
+    "recommendedRecipes": [
         {
-        "recipeId": "unique-id (UUID)",
-        "name": "Indonesian Fried Rice",
-        "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingredientList": [
-            {
-                "name": "rice",
-                "description": "100 grams of cooked rice"
-            }
-        ],
-        "photoUrl": "image-url",
-        "instruction": "prep: chop"
+            "id": 1,
+            "name": "red pepper asiago gougere  cheese bites",
+            "duration": 95,
+            "description": "these are cheesy and savory puff pastry bites. recipe from land o lakes.",
+            "ingredients": [
+                "water",
+                "butter",
+                "all-purpose flour",
+                "garlic salt",
+                "eggs",
+                "asiago cheese",
+                "red bell pepper",
+                "fresh basil"
+            ],
+            "missingIngredients": [
+                "chicken",
+                "tomato"
+            ],
+            "isBookmarked": true,
+            "photoUrl": null,
+            "instructions": [
+                "heat oven to 400 degrees f",
+                "line baking sheet with parchment paper",
+                "set aside",
+                "place water and butter in heavy 2-quart saucepan",
+                "cook over medium heat until mixture comes to a full boil",
+                "reduce heat to low",
+                "stir in flour and garlic salt vigorously until mixture leaves sides of pan and forms a ball",
+                "remove from heat",
+                "add 1 egg at a time , beating well after each addition , until mixture is smooth",
+                "stir in 1 cup cheese , bell pepper and basil",
+                "immediately drop by rounded teaspoonfuls onto prepared baking sheets",
+                "sprinkle each with 1 / 4 t remaining cheese",
+                "bake for 20-22 minutes or until golden brown",
+                "serve warm"
+            ]
         }
     ]
 }
