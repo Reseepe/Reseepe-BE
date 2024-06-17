@@ -167,53 +167,41 @@ exports.getBookmarkedRecipes = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const recommendedRecipes = await Recipe.findAll({
-      include: [
-        {
-          model: User,
-          where: { id: userId },
-          required: true,
-          attributes: [],
-          through: {
-            attributes: [],
-          },
-        },
-        {
-          model: Ingredient,
-          attributes: ["name", "description"],
-          through: { attributes: [] },
-        },
-        {
-          model: Instruction,
-          attributes: ["number", "step"],
-        },
-      ],
+    const bookmarks = await Bookmark.findAll({
+      where: { userId: userId },
+      attributes: ["recipeId"],
     });
 
-    const recommendedList = recommendedRecipes.map((recipe) => ({
-      recipeId: recipe.id,
-      name: recipe.name,
-      description: recipe.description,
-      ingredientList: recipe.Ingredients.map((ingredient) => ({
-        name: ingredient.name,
-        description: ingredient.description,
-      })),
-      photoUrl: recipe.photoUrl,
-      instruction: recipe.Instructions.map((instruction) => ({
-        step: instruction.step,
-      })),
-    }));
+    if (bookmarks.length === 0) {
+      return res.json({
+        bookmarkedRecipes: [],
+      });
+    }
 
-    res.status(200).json({
+    const recipeIds = bookmarks.map((bookmark) => bookmark.recipeId);
+
+    const recipes = await Recipe.findAll({
+      where: {
+        id: {
+          [Op.in]: recipeIds,
+        },
+      },
+    });
+
+    const transformedRecipes = await Promise.all(
+      recipes.map((recipe) => transformRecipe(recipe, [], userId))
+    );
+
+    res.json({
       error: false,
-      message: "Successfully fetched recommended recipes",
-      recommendedList,
+      message: "Successfully fetched bookmarked recipes",
+      bookmarkedRecipes: transformedRecipes,
     });
   } catch (error) {
-    console.error("Error fetching recommended recipes:", error);
+    console.error("Error fetching bookmarked recipes:", error);
     res.status(500).json({
       error: true,
-      message: "Failed to fetch recommended recipes",
+      message: "An error occurred while fetching bookmarked recipes",
     });
   }
 };
