@@ -177,21 +177,39 @@ Response Body Success :
 {
     "error": false,
     "message": "Succesfully bookmarked the recipe",
-    "recipeList": [
+    ```json
+{
+    "error": false,
+    "message": "Succesfully bookmarked the recipe",
+    "bookmarkedRecipes": [
         {
-        "recipeId": "unique-id (UUID)",
-        "name": "Indonesian Fried Rice",
-        "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
-        "ingredientList": [
-            {
-                "name": "rice",
-                "description": "100 grams of cooked rice"
-            }
-        ],
-        "photoUrl": "image-url",
-        "instruction": "prep: chop"
+            "id": 1,
+            "name": "red pepper asiago gougere  cheese bites",
+            "duration": 95,
+            "description": "these are cheesy and savory puff pastry bites. recipe from land o lakes.",
+            "ingredients": [
+                "water",
+                "butter",
+                "all-purpose flour",
+                "garlic salt",
+                "eggs",
+                "asiago cheese",
+                "red bell pepper",
+                "fresh basil"
+            ],
+            "missingIngredients": [
+                "chicken",
+                "tomato"
+            ],
+            "isBookmarked": true,
+            "photoUrl": null,
+            "instructions": [
+                "heat oven to 400 degrees f",
+            ]
         }
     ]
+}
+```
 }
 ```
 
