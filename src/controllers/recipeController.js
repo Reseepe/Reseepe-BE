@@ -320,21 +320,25 @@ const fetchRecommendedRecipes = async (user_input) => {
 
   while (attempt < maxRetries) {
     try {
-      const response = await axios.post(
+      const response = await fetch(
         "https://recommendation-system-api-ehx2oeustq-et.a.run.app/recommend",
         {
-          user_input: user_input,
-        },
-        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_input }),
           timeout: 10000,
         }
       );
-      return response.data;
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await response.json();
     } catch (error) {
-      if (
-        error.code === "ECONNABORTED" ||
-        error.code === "ERR_SOCKET_CONNECTION_TIMEOUT"
-      ) {
+      if (error.name === "AbortError" || error.name === "FetchError") {
         attempt++;
         if (attempt === maxRetries) {
           throw new Error(
