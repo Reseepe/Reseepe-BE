@@ -133,7 +133,11 @@ exports.getRecommendedRecipes = async (req, res) => {
       })
     );
 
-    res.status(200).json(recommendedRecipes);
+    res.status(200).json({
+      error: false,
+      message: "Succesfully retrieved the recommended recipes",
+      recommendedList: recommendedRecipes,
+    });
   } catch (error) {
     console.error("Error getting recommended recipes:", error);
     res.status(500).json({
@@ -220,35 +224,84 @@ exports.removeBookmark = async (req, res) => {
 };
 
 exports.getBookmarkedRecipes = async (req, res) => {
-  try {
-    const userId = req.user.id;
+  const userId = req.user.id;
 
+  try {
     const bookmarks = await Bookmark.findAll({
-      where: { userId: userId },
+      where: { userId },
       attributes: ["recipeId"],
     });
-
-    if (bookmarks.length === 0) {
-      return res.json({
-        bookmarkedRecipes: [],
-      });
-    }
 
     const recipeIds = bookmarks.map((bookmark) => bookmark.recipeId);
 
     const recipes = await Recipe.findAll({
-      where: {
-        id: {
-          [Op.in]: recipeIds,
-        },
-      },
+      where: { id: { [Op.in]: recipeIds } },
+      attributes: [
+        "id",
+        "name",
+        "duration",
+        "description",
+        "ingredients",
+        "photoUrl",
+        "instructions",
+      ],
     });
 
+    const bookmarkedRecipeIds = bookmarks.map((bookmark) => bookmark.recipeId);
+
     const transformedRecipes = await Promise.all(
-      recipes.map((recipe) => transformRecipe(recipe, [], userId))
+      recipes.map(async (recipe) => {
+        let ingredientsArray = [];
+        let instructionsArray = [];
+
+        try {
+          let ingredients = recipe.ingredients.trim();
+          if (ingredients.startsWith("[") && ingredients.endsWith("]")) {
+            ingredientsArray = JSON.parse(ingredients.replace(/'/g, '"'));
+          } else {
+            console.error(
+              `Ingredients format is invalid for recipe ${recipe.id}`
+            );
+          }
+        } catch (e) {
+          console.error(
+            `Error parsing ingredients for recipe ${recipe.id}:`,
+            e
+          );
+        }
+
+        try {
+          let instructions = recipe.instructions.trim();
+          if (instructions.startsWith("[") && instructions.endsWith("]")) {
+            instructionsArray = JSON.parse(instructions.replace(/'/g, '"'));
+          } else {
+            console.error(
+              `Instructions format is invalid for recipe ${recipe.id}`
+            );
+          }
+        } catch (e) {
+          console.error(
+            `Error parsing instructions for recipe ${recipe.id}:`,
+            e
+          );
+        }
+
+        const isBookmarked = bookmarkedRecipeIds.includes(recipe.id);
+
+        return {
+          id: recipe.id,
+          name: recipe.name,
+          duration: recipe.duration,
+          description: recipe.description,
+          ingredients: ingredientsArray,
+          isBookmarked: isBookmarked,
+          photoUrl: recipe.photoUrl,
+          instructions: instructionsArray,
+        };
+      })
     );
 
-    res.json({
+    res.status(200).json({
       error: false,
       message: "Successfully fetched bookmarked recipes",
       bookmarkedRecipes: transformedRecipes,
