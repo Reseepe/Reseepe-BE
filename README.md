@@ -193,10 +193,6 @@ Response Body Success :
                 "red bell pepper",
                 "fresh basil"
             ],
-            "missingIngredients": [
-                "chicken",
-                "tomato"
-            ],
             "isBookmarked": true,
             "photoUrl": null,
             "instructions": [
