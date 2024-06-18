@@ -29,7 +29,6 @@ exports.searchIngredients = async (req, res) => {
       where: {
         [Op.or]: [{ name: { [Op.like]: `%${query}%` } }],
       },
-      limit: 10,
     });
 
     const cleanedIngredients = ingredients.map((ingredient) => ({
