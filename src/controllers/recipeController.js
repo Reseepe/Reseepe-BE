@@ -56,6 +56,8 @@ exports.searchIngredients = async (req, res) => {
 };
 
 exports.getRecommendedRecipes = async (req, res) => {
+  const userId = req.user.id;
+
   try {
     const recipes = await Recipe.findAll({
       limit: 5,
@@ -70,57 +72,73 @@ exports.getRecommendedRecipes = async (req, res) => {
       ],
     });
 
-    const recommendedRecipes = recipes.map((recipe) => {
-      let ingredientsArray = [];
-      let instructionsArray = [];
-
-      try {
-        let ingredients = recipe.ingredients.trim();
-        if (ingredients.startsWith("[") && ingredients.endsWith("]")) {
-          ingredientsArray = JSON.parse(ingredients.replace(/'/g, '"'));
-        } else {
-          console.error(
-            `Ingredients format is invalid for recipe ${recipe.id}`
-          );
-        }
-      } catch (e) {
-        console.error(`Error parsing ingredients for recipe ${recipe.id}:`, e);
-      }
-
-      try {
-        let instructions = recipe.instructions.trim();
-        if (instructions.startsWith("[") && instructions.endsWith("]")) {
-          instructionsArray = JSON.parse(instructions.replace(/'/g, '"'));
-        } else {
-          console.error(
-            `Instructions format is invalid for recipe ${recipe.id}`
-          );
-        }
-      } catch (e) {
-        console.error(`Error parsing instructions for recipe ${recipe.id}:`, e);
-      }
-
-      return {
-        id: recipe.id,
-        name: recipe.name,
-        duration: recipe.duration,
-        description: recipe.description,
-        ingredients: ingredientsArray,
-        photoUrl: recipe.photoUrl,
-        instructions: instructionsArray,
-      };
+    const userBookmarks = await Bookmark.findAll({
+      where: { userId },
+      attributes: ["recipeId"],
     });
 
-    res.status(200).json({
-      error: false,
-      message: "Successfully fetched recommended recipes",
-      recommendedRecipes,
-    });
+    const bookmarkedRecipeIds = userBookmarks.map(
+      (bookmark) => bookmark.recipeId
+    );
+
+    const recommendedRecipes = await Promise.all(
+      recipes.map(async (recipe) => {
+        let ingredientsArray = [];
+        let instructionsArray = [];
+
+        try {
+          let ingredients = recipe.ingredients.trim();
+          if (ingredients.startsWith("[") && ingredients.endsWith("]")) {
+            ingredientsArray = JSON.parse(ingredients.replace(/'/g, '"'));
+          } else {
+            console.error(
+              `Ingredients format is invalid for recipe ${recipe.id}`
+            );
+          }
+        } catch (e) {
+          console.error(
+            `Error parsing ingredients for recipe ${recipe.id}:`,
+            e
+          );
+        }
+
+        try {
+          let instructions = recipe.instructions.trim();
+          if (instructions.startsWith("[") && instructions.endsWith("]")) {
+            instructionsArray = JSON.parse(instructions.replace(/'/g, '"'));
+          } else {
+            console.error(
+              `Instructions format is invalid for recipe ${recipe.id}`
+            );
+          }
+        } catch (e) {
+          console.error(
+            `Error parsing instructions for recipe ${recipe.id}:`,
+            e
+          );
+        }
+
+        const isBookmarked = bookmarkedRecipeIds.includes(recipe.id);
+
+        return {
+          id: recipe.id,
+          name: recipe.name,
+          duration: recipe.duration,
+          description: recipe.description,
+          ingredients: ingredientsArray,
+          isBookmarked: isBookmarked,
+          photoUrl: recipe.photoUrl,
+          instructions: instructionsArray,
+        };
+      })
+    );
+
+    res.status(200).json(recommendedRecipes);
   } catch (error) {
-    console.error("Error fetching recommended recipes:", error);
+    console.error("Error getting recommended recipes:", error);
     res.status(500).json({
       error: true,
-      message: "Failed to fetch recommended recipes",
+      message: "Failed to get recommended recipes",
     });
   }
 };
@@ -158,6 +176,45 @@ exports.addBookmark = async (req, res) => {
     res.status(500).json({
       error: true,
       message: "Failed to bookmark the recipe",
+    });
+  }
+};
+
+exports.removeBookmark = async (req, res) => {
+  const { recipeId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const existingBookmark = await Bookmark.findOne({
+      where: {
+        userId,
+        recipeId,
+      },
+    });
+
+    if (!existingBookmark) {
+      return res.status(404).json({
+        error: true,
+        message: "Bookmark not found",
+      });
+    }
+
+    await Bookmark.destroy({
+      where: {
+        userId,
+        recipeId,
+      },
+    });
+
+    res.status(200).json({
+      error: false,
+      message: "Successfully removed the bookmark",
+    });
+  } catch (error) {
+    console.error("Error removing bookmark:", error);
+    res.status(500).json({
+      error: true,
+      message: "Failed to remove the bookmark",
     });
   }
 };
@@ -388,7 +445,7 @@ const transformRecipe = async (recipe, clientIngredients, userId) => {
     name: recipe.name,
     duration: recipe.duration,
     description: recipe.description,
-    ingredients: recipeIngredients,
+    ingredients: clientIngredients,
     missingIngredients: missingIngredients,
     isBookmarked: isBookmarked,
     photoUrl: recipe.photoUrl,
