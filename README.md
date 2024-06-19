@@ -171,7 +171,7 @@ Request Header :
 
 Input Parameter :
 
-- recipeId (UUID)
+- recipeId
 
 Response Body Success :
 
@@ -317,7 +317,7 @@ Endpoint : GET /api/search?q=<query>
 
 Query Parameter :
 
-- ingredient name (UUID)
+- ingredient name
 
 Response Body Success :
 
