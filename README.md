@@ -142,7 +142,7 @@ Response Body Success :
         {
         "id": "1",
         "name": "Indonesian Fried Rice",
-        "duration": 60 (in minutes),
+        "duration": 60,
         "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
         "ingredients": [
             "rice",
