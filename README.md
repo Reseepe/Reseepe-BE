@@ -242,6 +242,8 @@ Request Header :
 Request Body :
 ```json
 {
+    "error": false,
+    "message": "Succesfully scanned the ingredients",
     "ingredientList": [
         {
             "name": "white onion",
