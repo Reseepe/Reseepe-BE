@@ -1,80 +1,76 @@
-const fs = require('fs');
-const path = require('path');
-const FormData = require('form-data');
+const fs = require("fs");
+const { promisify } = require("util");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const FormData = require("form-data");
+
+const unlinkAsync = promisify(fs.unlink);
 
 const fetchIngredientsFromPhoto = async (photoPath) => {
-    const formData = new FormData();
-    formData.append('file', fs.createReadStream(photoPath), {
-        filename: path.basename(photoPath)
-    });
+  const formData = new FormData();
+  formData.append("file", fs.createReadStream(photoPath));
 
-    try {
-        const response = await fetch('https://reseepe-object-detection-ehx2oeustq-et.a.run.app/object-to-json', {
-            method: 'POST',
-            body: formData,
-        });
+  try {
+    console.log("Sending request to external server...");
+    const response = await fetch(
+      "https://reseepe-object-detection-ehx2oeustq-et.a.run.app/object-to-json",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch ingredients: ${response.statusText}`);
-        }
+    console.log("Response received:", response.status, response.statusText);
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        throw new Error('Error fetching ingredients from photo: ' + error.message);
-    } finally {
-        fs.unlinkSync(photoPath);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(
+        `Failed to fetch ingredients: ${response.statusText} - ${errorText}`
+      );
+      throw new Error(
+        `Failed to fetch ingredients: ${response.statusText} - ${errorText}`
+      );
     }
+
+    const data = await response.json();
+    console.log("Data received:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching ingredients from photo:", error.message);
+    throw new Error(`Error fetching ingredients from photo: ${error.message}`);
+  } finally {
+    try {
+      await unlinkAsync(photoPath);
+    } catch (unlinkError) {
+      console.error("Error removing uploaded photo:", unlinkError.message);
+    }
+  }
 };
 
 exports.getIngredientsFromPhoto = async (req, res) => {
-    const photo = req.file;
-    if (!photo) {
-        return res.status(400).json({ error: true, message: 'No photo uploaded' });
+  const photo = req.file;
+  if (!photo) {
+    return res.status(400).json({ error: true, message: "No photo uploaded" });
+  }
+  console.log("Photo uploaded:", photo);
+
+  try {
+    const responseData = await fetchIngredientsFromPhoto(photo.path);
+    if (!responseData.result) {
+      throw new Error("Invalid response from external API");
     }
 
-    console.log('Uploaded photo path:', photo.path);
-    console.log('Uploaded photo originalname:', photo.originalname);
+    const ingredientList = responseData.result.map((item) => ({
+      name: item.name,
+    }));
 
-    try {
-        const responseData = await fetchIngredientsFromPhoto(photo.path);
-
-        console.log('responseData:', responseData);
-
-        if (!responseData.result) {
-            throw new Error('Invalid response from external API');
-        }
-
-        res.json({
-            error: false,
-            message: 'Ingredients fetched successfully',
-            ingredientList: responseData.result,
-        });
-    } catch (error) {
-        console.error('Error fetching ingredients from photo:', error.message);
-        res.status(500).json({ error: true, message: error.message });
-    }
-};
-
-exports.getIngredientsFromPhotoTest = async (req, res) => {
-    const photoPath = "uploads/ayam.jpg";
-
-    try {
-        const responseData = await fetchIngredientsFromPhoto(photoPath);
-
-        console.log('responseData:', responseData);
-
-        if (!responseData.result) {
-            throw new Error('Invalid response from external API');
-        }
-
-        res.json({
-            error: false,
-            message: 'Ingredients fetched successfully',
-            ingredientList: responseData.result,
-        });
-    } catch (error) {
-        console.error('Error fetching ingredients from photo:', error.message);
-        res.status(500).json({ error: true, message: error.message });
-    }
+    res.json({
+      error: false,
+      message: "Ingredients fetched successfully",
+      ingredientList: ingredientList,
+    });
+  } catch (error) {
+    console.error("Error fetching ingredients from photo:", error.message);
+    res.status(500).json({ error: true, message: error.message });
+  }
 };
