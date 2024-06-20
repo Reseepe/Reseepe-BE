@@ -1,6 +1,49 @@
-# User API Spec
+# Reseepe Main API Service
 
-## Register User API
+This is a server node with express.js javascript for the capstone Reseepe project, this service is used to retrieve recipe data in the database and connected to the machine learning API.
+
+## First Configuration
+
+Make sure you have the following software installed locally before running this project:
+
+- Node.js (version 12 or higher)
+- npm (Node Package Manager)
+- Docker (Optional)
+
+```bash
+git clone https://github.com/Reseepe/reseepe-API-main.git
+npm install
+```
+
+## Sequelize
+
+note:
+
+- setting up config database file
+- go to src directory
+- import sql table using the sequelize command
+- before you run development runtime, make sure sequelize has been generated
+```bash
+sequelize db:migrate
+```
+
+## Development Mode
+```bash
+npm run start-dev
+```
+
+The server will serve localhost:3000
+
+## Production Mode
+```bash
+npm start
+```
+
+## API Reference
+
+### User API Spec
+
+#### Register User API
 
 Endpoint : POST /api/register
 
@@ -24,7 +67,7 @@ Response Body Success :
 }
 ```
 
-## Login User API
+#### Login User API
 
 Endpoint : POST /api/login
 
@@ -51,7 +94,7 @@ Response Body Success :
 }
 ```
 
-## Get User API
+#### Get User API
 
 Endpoint : GET /api/profile
 
@@ -73,7 +116,7 @@ Response Body Success :
 }
 ```
 
-## Update User API
+#### Update User API
 
 Endpoint : PUT /api/profile/edit
 
@@ -96,7 +139,7 @@ Response Body Success :
 }
 ```
 
-## Change User Password API
+#### Change User Password API
 
 Endpoint : POST /api/changespass
 
@@ -122,9 +165,9 @@ Response Body Success :
 }
 ```
 
-# Recipes API Spec
+### Recipes API Spec
 
-## Get 5 Recommended Recipe
+#### Get 5 Recommended Recipe
 
 Endpoint : GET /api/recommended
 
@@ -161,7 +204,7 @@ Response Body Success :
 }
 ```
 
-## Add Bookmark API
+#### Add Bookmark API
 
 Endpoint : POST /api/bookmark/{recipeId}
 
@@ -182,7 +225,7 @@ Response Body Success :
 }
 ```
 
-## Get Bookmark API
+#### Get Bookmark API
 
 Endpoint : GET /api/bookmarked
 
@@ -219,7 +262,7 @@ Response Body Success :
 }
 ```
 
-## Get Ingredient from Scanned Photo API
+#### Get Ingredient from Scanned Photo API
 
 Endpoint : POST /api/ingredient
 
@@ -248,7 +291,7 @@ Response Body Success :
 }
 ```
 
-## Get Recipes with Scanned Ingredients
+#### Get Recipes with Scanned Ingredients
 
 Endpoint : POST /api/recipes
 
@@ -311,7 +354,7 @@ Response Body Success :
 }
 ```
 
-## Search Ingredient API
+#### Search Ingredient API
 
 Endpoint : GET /api/search?q=<query>
 
