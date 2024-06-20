@@ -1,0 +1,55 @@
+CREATE TABLE users (
+id		CHAR(36)	PRIMARY KEY,
+name		VARCHAR(255)	NOT NULL,
+email		VARCHAR(255)	NOT NULL UNIQUE,
+birthday	DATE,
+password	VARCHAR(255)	NOT NULL,
+created_at	TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP,
+updated_at	TIMESTAMP 	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE recipes (
+id		INT AUTO_INCREMENT	PRIMARY KEY,
+name		VARCHAR(255)	NOT NULL,
+duration	VARCHAR(255),
+description	TEXT,
+ingredients	TEXT,
+calories	VARCHAR(255),
+photoUrl	VARCHAR(255),
+instructions	TEXT,
+);
+
+
+CREATE TABLE ingredients (
+id 		INT		AUTO_INCREMENT PRIMARY KEY,
+name		VARCHAR(255)	NOT NULL,
+description	VARCHAR(255)
+);
+
+
+CREATE TABLE instructions (
+id		INT		AUTO_INCREMENT PRIMARY KEY,
+recipeId	INT		NOT NULL,
+number		INT		NOT NULL,
+step		VARCHAR(255)	NOT NULL,
+FOREIGN KEY (recipeId) REFERENCES recipes(id)
+);
+
+
+CREATE TABLE bookmarks (
+id 		INT		AUTO_INCREMENT PRIMARY KEY,
+userId		CHAR(36)	NOT NULL,
+recipeId	INT		NOT NULL,
+FOREIGN KEY (userId) REFERENCES users(id),
+FOREIGN KEY (recipeId) REFERENCES recipes(id)
+);
+
+
+CREATE TABLE recipeIngredient (
+id		INT		AUTO_INCREMENT PRIMARY KEY,
+recipeId	INT		NOT NULL,
+ingredientId	INT		NOT NULL,
+FOREIGN KEY (recipeId) REFERENCES recipes(id),
+FOREIGN KEY (ingredientId) REFERENCES ingredients(id)
+);
