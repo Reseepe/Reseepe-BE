@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "0a87c32a-eac4-4668-846d-a08d7d51e04b",
+		"name": "Reseepe Final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30947354"
+	},
+	"item": [
+		{
+			"name": "Hello World",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"hanif\",\r\n    \"email\": \"hanif@gmail.com\",\r\n    \"birthday\": \"1999-11-10\",\r\n    \"password\": \"abcdefgh\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/register",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"hanif@gmail.com\",\r\n    \"password\": \"abcdefgh\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/login",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/profile",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"robby\",\r\n    \"email\": \"robby@gmail.com\",\r\n    \"birthday\": \"1945-09-12\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/profile/edit/",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"profile",
+						"edit",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change User Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\": \"abcdefgh\",\r\n    \"newPassword\": \"bcdefghi\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/changespass",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"changespass"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Recommended Recipe",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/recommended",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"recommended"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Bookmark",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/bookmark/1",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"bookmark",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unbookmark",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/unbookmark/1",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"unbookmark",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Bookmark",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/bookmarked",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"bookmarked"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Recipes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ingredientList\": [\r\n        {\r\n            \"name\": \"water\"\r\n        },\r\n        {\r\n            \"name\": \"chicken\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/recipes",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"recipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Scanned Ingredients",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "/C:/Users/Hanif Robby/Downloads/ayam.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/ingredient",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Ingredients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reseepi-api-main-ehx2oeustq-et.a.run.app/api/search?q=beef",
+					"protocol": "https",
+					"host": [
+						"reseepi-api-main-ehx2oeustq-et",
+						"a",
+						"run",
+						"app"
+					],
+					"path": [
+						"api",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "beef"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExYjBkMTRkLTU2ZWUtNDIwMi04NjMxLWZlYjFiMTJhNmVkMSIsImlhdCI6MTcxODcwODExMiwiZXhwIjoxNzE4Nzk0NTEyfQ._Ho14q0wZ0mKiFw-b6h59vC-fjyk50aE_e9jokC70p0"
+		}
+	]
+}
