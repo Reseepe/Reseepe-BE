@@ -1,6 +1,8 @@
-# User API Spec
+## API Reference
 
-## Register User API
+### User API Spec
+
+#### Register User API
 
 Endpoint : POST /api/register
 
@@ -24,7 +26,7 @@ Response Body Success :
 }
 ```
 
-## Login User API
+#### Login User API
 
 Endpoint : POST /api/login
 
@@ -51,7 +53,7 @@ Response Body Success :
 }
 ```
 
-## Get User API
+#### Get User API
 
 Endpoint : GET /api/profile
 
@@ -73,7 +75,7 @@ Response Body Success :
 }
 ```
 
-## Update User API
+#### Update User API
 
 Endpoint : PUT /api/profile/edit
 
@@ -96,7 +98,7 @@ Response Body Success :
 }
 ```
 
-## Change User Password API
+#### Change User Password API
 
 Endpoint : POST /api/changespass
 
@@ -122,9 +124,9 @@ Response Body Success :
 }
 ```
 
-# Recipes API Spec
+### Recipes API Spec
 
-## Get 5 Recommended Recipe
+#### Get 5 Recommended Recipe
 
 Endpoint : GET /api/recommended
 
@@ -161,7 +163,7 @@ Response Body Success :
 }
 ```
 
-## Add Bookmark API
+#### Add Bookmark API
 
 Endpoint : POST /api/bookmark/{recipeId}
 
@@ -171,7 +173,7 @@ Request Header :
 
 Input Parameter :
 
-- recipeId (UUID)
+- recipeId
 
 Response Body Success :
 
@@ -182,7 +184,7 @@ Response Body Success :
 }
 ```
 
-## Get Bookmark API
+#### Get Bookmark API
 
 Endpoint : GET /api/bookmarked
 
@@ -200,7 +202,7 @@ Response Body Success :
         {
             "id": "1",
             "name": "Indonesian Fried Rice",
-            "duration": 60 (in minutes),
+            "duration": 60,
             "description": "Indoensian fried rice, known as Nasi Goreng, is a ...",
             "ingredients": [
                 "rice",
@@ -219,7 +221,7 @@ Response Body Success :
 }
 ```
 
-## Get Ingredient from Scanned Photo API
+#### Get Ingredient from Scanned Photo API
 
 Endpoint : POST /api/ingredient
 
@@ -248,7 +250,7 @@ Response Body Success :
 }
 ```
 
-## Get Recipes with Scanned Ingredients
+#### Get Recipes with Scanned Ingredients
 
 Endpoint : POST /api/recipes
 
@@ -311,13 +313,13 @@ Response Body Success :
 }
 ```
 
-## Search Ingredient API
+#### Search Ingredient API
 
 Endpoint : GET /api/search?q=<query>
 
 Query Parameter :
 
-- ingredient name (UUID)
+- ingredient name
 
 Response Body Success :
 
